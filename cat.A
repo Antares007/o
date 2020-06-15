@@ -1,0 +1,36 @@
+bits 64
+global _start
+_start:
+  mov   edi, 0x0          ; fd
+  mov   rsi, buffer       ; char*
+  mov   edx, buffer.size  ; length
+  call read
+
+  cmp   eax, 0
+  je    exit
+
+  mov   edi, 0x1          ; fd
+  mov   rsi, buffer       ; const char*
+  mov   edx, eax          ; length
+  call write
+  
+  jmp   _start
+
+exit:
+  mov   eax, 60
+  xor   edi, edi
+  syscall
+
+read:
+  mov   eax, 0x0          ; read
+  syscall
+  ret
+
+write:
+  mov   eax, 0x1          ; write
+  syscall
+  ret
+align 1<<12
+buffer: 
+  .size equ 1 << 12
+  times .size db 0

@@ -1,0 +1,15 @@
+bits 64
+segment .text
+global _start
+_start:
+  mov   eax, 0x1            ; write
+  mov   edi, 0x1            ; fd
+  lea   rsi, [rel message]
+  mov   edx, message.size   ; length
+  syscall
+  mov   eax, 60
+  xor   edi, edi
+  syscall
+message: 
+  db "abo", 0xd, 0xa
+  .size equ $ - message

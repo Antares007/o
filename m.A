@@ -1,0 +1,14 @@
+bits 64
+%macro function 1
+  %defstr %%name %1
+  mov rax, rdi
+  mov rdi, %%name
+  lea rsi, [rel %1]
+  lea rdx, [rel %1.end]
+  jmp rax
+%1:
+%endmacro
+%macro return 0
+  ret
+  .end:
+%endmacro
