@@ -25,3 +25,30 @@ function plus
 return
 
 ret
+
+extern putstr
+extern putuiq
+%macro pstr 1
+  mov rdi, %1
+  call putstr
+%endmacro
+
+global tc
+tc:
+  lea rdi, [rel pith]
+  call bark
+
+  pstr 'end!'
+  pstr 0xa
+
+  ret
+
+pith:
+  push rdx
+  pstr rdi
+  pstr rsi
+  pstr 0xa
+  lea rdi, [rel pith]
+  pop rdx
+  jmp rdx 
+
