@@ -1,0 +1,25 @@
+%include "m.A"
+
+function exit
+  mov   eax, 60
+  xor   edi, edi
+  syscall
+return
+
+function read
+  mov   eax, 0x0
+  syscall
+return
+
+function write
+  mov   eax, 0x1
+  syscall
+return
+
+function plus
+  lea rax, [rdi+rsi]
+  ;mov rax, rdi
+  ;add rax, rsi
+return
+
+ret

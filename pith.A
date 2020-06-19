@@ -1,0 +1,7 @@
+%include "m.A"
+
+pith:
+push rdx
+lea rdi, [rel pith]
+pop rdx
+jmp rdx 

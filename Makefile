@@ -1,7 +1,10 @@
-CC=clang -O3 -std=c99
+CC=clang -O3 -std=gnu99
 
 main.out: main.c b.o c.o utils.o
 	${CC} $^ -o $@ 
+
+mmap.out: mmap.c bark.bin pith.bin
+	${CC} $< -o $@ 
 
 b.o: b.A m.A
 
