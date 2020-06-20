@@ -5,13 +5,11 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
 #define handle_error(msg)                                                      \
   do {                                                                         \
     perror(msg);                                                               \
     exit(EXIT_FAILURE);                                                        \
   } while (0)
-
 void *mapfile(const char *filename, size_t *size) {
   int fd = open(filename, O_RDONLY);
   struct stat sb;
@@ -33,10 +31,10 @@ typedef void (*bark_t)(pith_t);
 int main(int argc, char *argv[]) {
   bark_t bark;
   pith_t pith;
-  size_t length;
-  bark = mapfile("bark.bin", &length);
-  pith = mapfile("pith.bin", &length);
-  printf("%p(%p)\n", bark, pith);
+  size_t blen, plen;
+  bark = mapfile("bark.bin", &blen);
+  pith = mapfile("pith.bin", &plen);
+  printf("%p-%zu(%p-%zu)\n", bark, blen, pith, plen);
   bark(pith);
   printf("done!\n");
   return 0;

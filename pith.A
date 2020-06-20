@@ -1,7 +1,21 @@
 %include "m.A"
 
 pith:
-push rdx
-lea rdi, [rel pith]
-pop rdx
-jmp rdx 
+  mov   rax, 'write'
+  cmp   rdi, rax
+  je    next
+  lea   rdi, [rel pith]
+  jmp   rdx 
+write:
+  dq 0
+next:
+  mov  [rel write], rsi
+
+  mov   edi, 0x1          ; fd
+  lea   rsi, [rel buffer] ; const char*
+  mov   edx, 5            ; length
+  call   [rel write]
+  ret
+
+buffer:
+  db 'haha', 0xa
