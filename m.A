@@ -12,3 +12,18 @@ bits 64
   ret
   .end:
 %endmacro
+
+%macro import 1
+%defstr %%name %1
+%%loop:
+  mov   rax, %%name
+  cmp   rdi, rax
+  je    %%next
+  lea   rdi, [rel %%loop]
+  jmp   rdx 
+%1:
+  dq 0
+%%next:
+  mov  [rel %1], rsi
+%endmacro
+

@@ -1,20 +1,18 @@
 %include "m.A"
 
-pith:
-  mov   rax, 'write'
-  cmp   rdi, rax
-  je    next
-  lea   rdi, [rel pith]
-  jmp   rdx 
-write:
-  dq 0
-next:
-  mov  [rel write], rsi
+import read
+import write
+import plus
+
+  mov   edi, 0x0          ; fd
+  lea   rsi, [rel buffer]       ; char*
+  mov   edx, 3 ; length
+  call  [rel read]
 
   mov   edi, 0x1          ; fd
   lea   rsi, [rel buffer] ; const char*
   mov   edx, 5            ; length
-  call   [rel write]
+  call  [rel write]
   ret
 
 buffer:
