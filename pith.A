@@ -1,19 +1,26 @@
 %include "m.A"
 
-import read
-import write
-import plus
+  lea rdx, [rel tail]
+  import putstr
+  import read
+  import plus
 
   mov   edi, 0x0          ; fd
-  lea   rsi, [rel buffer]       ; char*
-  mov   edx, 3 ; length
+  lea   rsi, [rel buffer] ; char*
+  mov   edx, buffer.size  ; length
   call  [rel read]
+  cmp   eax, 0
+  je    exit
 
   mov   edi, 0x1          ; fd
   lea   rsi, [rel buffer] ; const char*
-  mov   edx, 5            ; length
-  call  [rel write]
+  mov   edx, eax          ; length
+  call  [rel putstr]
+exit:
   ret
 
 buffer:
-  db 'haha', 0xa
+  times 1<<10 db '_'
+  .size: equ $ - buffer
+
+tail:

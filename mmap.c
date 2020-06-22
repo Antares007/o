@@ -19,23 +19,27 @@ void *mapfile(const char *filename, size_t *size) {
     handle_error("fstat");
   if (size)
     *size = sb.st_size;
-  void *addr = mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE | PROT_EXEC,
-                    MAP_PRIVATE, fd, 0);
+  void *addr =
+      mmap((void *)0x666666666000, sb.st_size,
+           PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_FIXED, fd, 0);
   close(fd);
   return addr;
 }
 
 typedef void (*pith_t)(uint64_t, void *, void *);
 typedef void (*bark_t)(pith_t);
+typedef void (*absurd)();
 
 int main(int argc, char *argv[]) {
-  bark_t bark;
-  pith_t pith;
-  size_t blen, plen;
-  bark = mapfile("bark.bin", &blen);
-  pith = mapfile("pith.bin", &plen);
-  printf("%p-%zu(%p-%zu)\n", bark, blen, pith, plen);
-  bark(pith);
-  printf("done!\n");
-  return 0;
+  // bark_t bark;
+  // pith_t pith;
+  // size_t blen, plen;
+  // bark = mapfile("bark.bin", &blen);
+  // pith = mapfile("pith.bin", &plen);
+  // printf("%p-%zu(%p-%zu)\n", bark, blen, pith, plen);
+  // bark(pith);
+  // printf("done!\n");
+  absurd a = mapfile("pb.bin", NULL);
+  a();
+  return 9;
 }

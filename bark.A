@@ -22,4 +22,5 @@ function plus
   ;add rax, rsi
 return
 
-ret
+hlt
+tail:

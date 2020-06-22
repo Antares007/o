@@ -1,0 +1,12 @@
+%include "m.A"
+
+lea rdx, [rel tail]
+push rdi
+import write
+pop rdi
+
+function putstr
+  call [rel write]
+return
+
+tail:
