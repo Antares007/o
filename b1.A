@@ -1,12 +1,29 @@
 %include "m.A"
 
-function putchars
-  mov   [rsp - 8], rdi 
-  mov   edi, 0x1
-  lea   rsi, [rsp - 8]
-  mov   edx, 8
-  mov   eax, 0x1
-  syscall
-return
+function ns
+  function putchars
+    mov   [rsp - 8], rdi 
+    mov   edi, 0x1
+    lea   rsi, [rsp - 8]
+    mov   edx, 8
+    mov   eax, 0x1
+    syscall
+    ret
+  putchars.end:
+
+  function putchar2
+    mov   [rsp - 8], rdi 
+    mov   edi, 0x1
+    lea   rsi, [rsp - 8]
+    mov   edx, 8
+    mov   eax, 0x1
+    syscall
+    mov   eax, 0x1
+    syscall
+    ret
+  putchar2.end:
+
+  ret
+ns.end:
 
 tail:

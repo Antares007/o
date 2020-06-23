@@ -2,9 +2,12 @@
 
 imports [rel tail] \
       , putstr     \
-      , putchars   \
+      , ns         \
       , read       \
       , plus
+  mov     rdx, [rel ns]
+  import  putchars
+  import  putchar2
 
   mov   edi, 0x0          ; fd
   lea   rsi, [rel buffer] ; char*
@@ -19,7 +22,7 @@ imports [rel tail] \
   call  [rel putstr]
 
   mov   rdi, 'abcdefgh'
-  call  [rel putchars]
+  call  [rel putchar2]
 exit:
   ret
 
