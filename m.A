@@ -27,3 +27,14 @@ bits 64
   mov  [rel %1], rsi
 %endmacro
 
+%macro imports 1-*
+  lea rdx, %1
+  %rotate  1
+  push rdi
+%rep ((%0) - 1)
+  import %1
+  %rotate  1
+%endrep
+  pop rdi
+%endmacro
+

@@ -2,7 +2,8 @@
 
 imports [rel tail], write
 
-function putstr
+function putstr2
+  call [rel write]
   call [rel write]
 return
 

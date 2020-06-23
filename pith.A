@@ -1,9 +1,10 @@
 %include "m.A"
 
-  lea rdx, [rel tail]
-  import putstr
-  import read
-  import plus
+imports [rel tail] \
+      , putstr  \
+      , putstr2 \
+      , read    \
+      , plus
 
   mov   edi, 0x0          ; fd
   lea   rsi, [rel buffer] ; char*
@@ -15,7 +16,7 @@
   mov   edi, 0x1          ; fd
   lea   rsi, [rel buffer] ; const char*
   mov   edx, eax          ; length
-  call  [rel putstr]
+  call  [rel putstr2]
 exit:
   ret
 
