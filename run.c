@@ -5,6 +5,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
 #define handle_error(msg)                                                      \
   do {                                                                         \
     perror(msg);                                                               \
@@ -14,7 +15,7 @@ void *mapfile(const char *filename, size_t *size) {
   int fd = open(filename, O_RDONLY);
   struct stat sb;
   if (fd == -1)
-    handle_error("open");
+    handle_error(filename);
   if (fstat(fd, &sb) == -1)
     handle_error("fstat");
   if (size)
@@ -31,15 +32,11 @@ typedef void (*bark_t)(pith_t);
 typedef void (*absurd)();
 
 int main(int argc, char *argv[]) {
-  // bark_t bark;
-  // pith_t pith;
-  // size_t blen, plen;
-  // bark = mapfile("bark.bin", &blen);
-  // pith = mapfile("pith.bin", &plen);
-  // printf("%p-%zu(%p-%zu)\n", bark, blen, pith, plen);
-  // bark(pith);
-  // printf("done!\n");
-  absurd a = mapfile("pb.bin", NULL);
+  if (argc < 2) {
+    printf("%s filenameToRun\n", argv[0]);
+    return -1;
+  }
+  absurd a = mapfile(argv[1], NULL);
   a();
-  return 9;
+  return 0;
 }
