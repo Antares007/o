@@ -15,10 +15,10 @@ gui.out: gui.c
 %.out: %.o
 	ld $< -o $@
 
-%.bin: %.o
+%.fbin: %.o
 	objcopy -O binary $< $@
 
-%.fbin: %.A
+%.bin: %.A
 	nasm -f bin $< -o $@
 
 %.o: %.A

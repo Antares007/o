@@ -1,4 +1,14 @@
 %include "m.A"
+push rdi
+lea rdx, [rel tail]
+import write_, 'write'
+pop rdi
+
+function write
+  call [rel write_]
+  call [rel write_]
+  ret
+write.end:
 
 function ns
   function putchars

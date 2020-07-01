@@ -1,9 +1,12 @@
 %include "m.A"
-
-imports [rel tail], write
+push rdi
+lea rdx, [rel tail]
+import write, 'write'
+pop rdi
 
 function putstr
   call [rel write]
-return
+  ret
+putstr.end:
 
 tail:

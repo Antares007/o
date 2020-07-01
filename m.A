@@ -13,28 +13,23 @@ bits 64
   .end:
 %endmacro
 
-%macro import 1
-%defstr %%name %1
+%macro import 2
 %%next:
-  lea   rdi, [rel %%loop]
+  lea   rdi, [rel %%pith]
   jmp   rdx 
 %1:
   dq 0
-%%loop:
-  mov   rax, %%name
+%%pith:
+  mov   rax, %2
   cmp   rdi, rax
   jne    %%next
   mov  [rel %1], rsi
 %endmacro
 
-%macro imports 2-*
-  lea rdx, %1
-  %rotate  1
-  push rdi
-%rep ((%0) - 1)
-  import %1
+%macro imports 1-*
+%rep (%0)
+  %defstr %%name %1
+  import %1, %%name
   %rotate  1
 %endrep
-  pop rdi
 %endmacro
-

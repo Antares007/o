@@ -1,13 +1,10 @@
 %include "m.A"
-
-imports [rel tail] \
-      , putstr     \
-      , ns         \
-      , read       \
-      , plus
-  mov     rdx, [rel ns]
-  import  putchars
-  import  putchar2
+push rdi
+lea rdx, [rel tail]
+imports putstr, ns, read, plus
+mov rdx, [rel ns]
+imports putchars, putchar2
+pop rdi
 
   mov   edi, 0x0          ; fd
   lea   rsi, [rel buffer] ; char*
@@ -22,12 +19,23 @@ imports [rel tail] \
   call  [rel putstr]
 
   mov   rdi, 'abcdefgh'
-  call  [rel putchar2]
+  call  [rel putchars]
+  mov   rdi, 0xa
+  call  [rel putchars]
+  call f
+  call c
+  mov   rdi, 0xa
+  call  [rel putchars]
 exit:
   ret
 
 buffer:
-  times 1<<10 db '_'
+  times 1<<4 db '_'
   .size: equ $ - buffer
-
+  align 1<<0
+c:
+f:
+  mov rdi, 'a'
+  call [rel putchars]
+  ret
 tail:
