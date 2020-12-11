@@ -24,7 +24,7 @@ pop rdi
   call  [rel putchars]
   call f
   call c
-  mov   rdi, 0xa
+  mov   rdi, 'hi'
   call  [rel putchars]
 exit:
   ret

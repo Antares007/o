@@ -1,0 +1,113 @@
+bits 64
+%macro M 1-*
+  %rep (%0)
+    %1
+    %rotate  1
+  %endrep
+%endmacro
+%macro C 1-*
+  mov   rax, rdi
+  mov   edi, 'C'
+  mov   rsi, 'C'
+  mov   rdx, rsi
+  lea   rcx, [rel %%next]
+  jmp   rax
+  %rep (%0)
+    %1
+    %rotate  1
+  %endrep
+  %%next:
+%endmacro
+%macro G 1
+  %defstr %%name %1
+  mov   rax, rdi
+  mov   edi, 'G'
+  mov   rsi, %%name
+  lea   rdx, [rel %1]
+  lea   rcx, [rel %%next]
+  jmp   rax
+  %%next:
+%endmacro
+%macro A 1
+  %defstr %%name %1
+  mov   rax, rdi
+  mov   edi, 'A'
+  mov   rsi, %%name
+  lea   rdx, [rel %1]
+  lea   rcx, [rel %%next]
+  jmp   rax
+  %%next:
+%endmacro
+%macro T 1
+  mov   rax, rdi
+  mov   edi, 'T'
+  mov   rsi, %1
+  mov   rdx, rsi
+  lea   rcx, [rel %%next]
+  jmp   rax
+  %%next:
+%endmacro
+
+_:
+ ret
+
+enalfaaf:
+  M {C T "A", G _}, {C T "a", G _}
+  M {C T "B", G _}, {C T "b", G _}
+  M {C T "C", G _}, {C T "c", G _}
+  M {C T "D", G _}, {C T "d", G _}
+  M {C T "E", G _}, {C T "e", G _}
+  M {C T "F", G _}, {C T "f", G _}
+  dq 0
+enalfagz:                  
+  M {C T "G", G _}, {C T "g", G _}
+  M {C T "H", G _}, {C T "h", G _}
+  M {C T "I", G _}, {C T "i", G _}
+  M {C T "J", G _}, {C T "j", G _}
+  M {C T "K", G _}, {C T "k", G _}
+  M {C T "L", G _}, {C T "l", G _}
+  M {C T "M", G _}, {C T "m", G _}
+  M {C T "N", G _}, {C T "n", G _}
+  M {C T "O", G _}, {C T "o", G _}
+  M {C T "P", G _}, {C T "p", G _}
+  M {C T "Q", G _}, {C T "q", G _}
+  M {C T "R", G _}, {C T "r", G _}
+  M {C T "S", G _}, {C T "s", G _}
+  M {C T "T", G _}, {C T "t", G _}
+  M {C T "U", G _}, {C T "u", G _}
+  M {C T "V", G _}, {C T "v", G _}
+  M {C T "W", G _}, {C T "w", G _}
+  M {C T "X", G _}, {C T "x", G _}
+  M {C T "Y", G _}, {C T "y", G _}
+  M {C T "Z", G _}, {C T "z", G _}
+
+;hex_quad:
+;nondigit:
+;
+;uchrname:
+;  C T "\U", A hex_quad, A hex_quad, G _
+;  C T "\u", A hex_quad, G _
+;
+;idnondig:
+;  C A nondigit, G _
+;  C A uchrname, G _
+;
+;nonzrdgt:
+;  C T "1", G _
+;  C T "2", G _
+;  C T "3", G _
+;  C T "4", G _
+;  C T "5", G _
+;  C T "6", G _
+;  C T "7", G _
+;  C T "8", G _
+;  C T "9", G _
+;
+;digit:
+;  C T "0", G _
+;  C A nonzrdgt, G _
+;
+;id:
+;  C A idnondig, G _
+;  C A id, A idnondig, G _
+;  C A id, A digit, G _

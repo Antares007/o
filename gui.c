@@ -46,6 +46,10 @@ void test(struct bPith *o) {
   o->frame(o, testa);
 }
 
+void windowBark(void (*o)(int x, int y, uint32_t color)) {
+  //
+}
+
 int main() {
   Display *display = XOpenDisplay(NULL);
   Window windowRoot = DefaultRootWindow(display);

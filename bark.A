@@ -4,23 +4,32 @@ function exit
   mov   eax, 60
   xor   edi, edi
   syscall
-return
+  ret
+exit.end:
 
 function read
   mov   eax, 0x0
   syscall
-return
+  ret
+read.end:
 
 function write
   mov   eax, 0x1
   syscall
-return
+  ret
+write.end:
 
 function plus
   lea rax, [rdi+rsi]
   ;mov rax, rdi
   ;add rax, rsi
-return
+  ret
+plus.end:
 
-ret
 tail:
+ret
+nop
+ret
+nop
+ret
+nop

@@ -2,17 +2,12 @@ bits 64
 %macro function 1
   %defstr %%name %1
   mov rax, rdi
-  mov rdi, %%name
-  lea rsi, [rel %1]
-  lea rdx, [rel %1.end]
+  mov rdi, %%name       ;name
+  lea rsi, [rel %1]     ;head
+  lea rdx, [rel %1.end] ;tail
   jmp rax
 %1:
 %endmacro
-%macro return 0
-  ret
-  .end:
-%endmacro
-
 %macro import 2
 %%next:
   lea   rdi, [rel %%pith]
@@ -25,7 +20,6 @@ bits 64
   jne    %%next
   mov  [rel %1], rsi
 %endmacro
-
 %macro imports 1-*
 %rep (%0)
   %defstr %%name %1
