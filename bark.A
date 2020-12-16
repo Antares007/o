@@ -27,9 +27,4 @@ function plus
 plus.end:
 
 tail:
-ret
-nop
-ret
-nop
-ret
-nop
+times 8 nop

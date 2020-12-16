@@ -12,7 +12,7 @@
     exit(EXIT_FAILURE);                                                        \
   } while (0)
 void* mapfile(const char *filename, size_t *size) {
-  int fd = open(filename, O_RDONLY);
+  int fd = open(filename, O_RDWR);
   struct stat sb;
   if (fd == -1)
     handle_error(filename);
@@ -22,7 +22,8 @@ void* mapfile(const char *filename, size_t *size) {
     *size = sb.st_size;
   void *addr =
       mmap((void *)0x666666666000, sb.st_size,
-           PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_FIXED, fd, 0);
+           PROT_READ | PROT_WRITE | PROT_EXEC, MAP_SHARED | MAP_FIXED, fd, 0);
+
   close(fd);
   return addr;
 }
@@ -41,7 +42,10 @@ int main(int argc, char *argv[]) {
     printf("%s filenameToRun\n", argv[0]);
     return -1;
   }
-  bark_t b = mapfile(argv[1], NULL);
+  size_t size;
+  void * addr = mapfile(argv[1], &size);
+  bark_t b = addr;
+  ((uint8_t*)addr)[size-1] = 0xc3;
   b(pith);
   printf("done\n");
   return 0;
