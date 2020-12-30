@@ -1,0 +1,61 @@
+bits 64
+%define a1 rdi
+%define a2 rsi
+%define a3 rdx
+%define a4 rcx
+%macro M 1-*
+  %rep (%0)
+    %1
+    %rotate  1
+  %endrep
+%endmacro
+%macro Ξ 1-*
+  mov   rax, rdi
+  mov   rdi, 'C'
+  lea   rsi, [rel %%left]
+  %ifid %1
+    lea   rdx, [rel %%right]
+  %else
+    xor   rdx, rdx
+  %endif
+  jmp   rax
+  %rotate  1
+%%left:
+  %rep (%0 - 1)
+    %1
+    %rotate  1
+  %endrep
+  nop
+%%right:
+%endmacro
+%macro mT 1
+  %defstr %%name %1
+  mov   rdi, 'T'
+  mov   rsi, %%name
+%endmacro
+%macro mA 1
+  mov   rdi, 'A'
+  lea   rsi, [rel %1]
+%endmacro
+%macro mG 1
+  mov   rdi, 'G'
+  lea   rsi, [rel %1]
+%endmacro
+%macro N 2
+  mov   rax, rdi
+  %1 %2
+  lea   rdx, [rel %%next]
+  jmp   rax
+  %%next:
+%endmacro
+%macro Α 1
+  N mA, %1
+%endmacro
+%macro Τ 1
+  N mT, %1
+%endmacro
+%macro Γ 1
+  N mG, %1
+%endmacro
+
+

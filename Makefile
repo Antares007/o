@@ -1,5 +1,8 @@
 CC=clang -O3 -std=gnu99
 
+parse.out: parse.c g.o
+	${CC} $^ -o $@ 
+
 main.out: main.c b.o c.o utils.o
 	${CC} $^ -o $@ 
 

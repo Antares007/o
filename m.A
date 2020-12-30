@@ -8,6 +8,7 @@ bits 64
   jmp rax
 %1:
 %endmacro
+
 %macro import 2
 %%next:
   lea   rdi, [rel %%pith]
@@ -20,6 +21,7 @@ bits 64
   jne    %%next
   mov  [rel %1], rsi
 %endmacro
+
 %macro imports 1-*
 %rep (%0)
   %defstr %%name %1
