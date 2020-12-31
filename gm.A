@@ -31,7 +31,7 @@ bits 64
 %macro mT 1
   %defstr %%name %1
   mov   rdi, 'T'
-  mov   rsi, %%name
+  mov   rsi, %1
 %endmacro
 %macro mA 1
   mov   rdi, 'A'

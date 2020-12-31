@@ -1,4 +1,4 @@
-CC=clang -O3 -std=gnu99
+CC=clang -O0 -g -std=gnu99
 
 parse.out: parse.c g.o
 	${CC} $^ -o $@ 
@@ -18,7 +18,7 @@ gui.out: gui.c
 	${CC} $< -o $@ -lX11 -lGL
 
 %.out: %.o
-	ld $< -o $@
+	${CC} $^ -o $@ 
 
 %.fbin: %.o
 	objcopy -O binary $< $@

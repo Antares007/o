@@ -7,7 +7,6 @@ extern void bark(void (*o)(uint64_t n, void *, void *));
 extern void tc();
 int (*plus)(int, int);
 
-
 void pith(uint64_t n, void *f, void *t) {
   print0(n, f, t);
   if (n == 'sulp') {

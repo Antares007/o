@@ -1,21 +1,732 @@
 %include "gm.A"
 global E
-E:  Ξ Ν         ,{ \
-    Α E        },{ \
-    Τ +        },{ \
-    Α T        },{ \
-    Γ _         } 
-T:  Ξ Ν         ,{ \
-    Α T        },{ \
-    Τ *        },{ \
-    Α F        },{ \
-    Γ _         }
-F:  Ξ Ν         ,{ \
-    Τ (        },{ \
-    Α E        },{ \
-    Τ )        },{ \
-    Γ _         }
-    Ξ 0         ,{ \
-    Τ id       },{ \
-    Γ _         }
+E:  Ξ Ν          ,{ \
+    Α E         },{ \
+    Τ '+'       },{ \
+    Α T         },{ \
+    Γ _          } 
+    Ξ 0          ,{ \
+    Α T         },{ \
+    Γ _          }
+T:  Ξ Ν          ,{ \
+    Α T         },{ \
+    Τ '*'       },{ \
+    Α F         },{ \
+    Γ _          }
+    Ξ 0          ,{ \
+    Α F         },{ \
+    Γ _          }
+F:  Ξ Ν          ,{ \
+    Τ '('       },{ \
+    Α E         },{ \
+    Τ ')'       },{ \
+    Γ _          }
+    Ξ 0          ,{ \
+    Τ 'id'      },{ \
+    Γ _          }
 _:  ret
+global S
+S:  
+    Ξ Ν          ,{ \
+    Α S         },{ \
+    Τ 'a'       },{ \
+    Γ _          }  
+    Ξ Ν          ,{ \
+    Α S         },{ \
+    Τ 'o'       },{ \
+    Γ _          }  
+    Ξ 0          ,{ \
+    Τ 'b'       },{ \
+    Γ _          } 
+
+global declaration
+declaration:
+global declaration
+declaration:
+Ξ Ν, {Α declaration_specifiers}, {Α init_declarator_list_opt}, {Τ ";"}, {Γ _}
+Ξ 0, {Α static_assert_declaration}, {Γ _}
+global declaration_specifiers
+declaration_specifiers:
+Ξ Ν, {Α storage_class_specifier}, {Α declaration_specifiers_opt}, {Γ _}
+Ξ Ν, {Α type_specifier}, {Α declaration_specifiers_opt}, {Γ _}
+Ξ Ν, {Α type_qualifier}, {Α declaration_specifiers_opt}, {Γ _}
+Ξ Ν, {Α function_specifier}, {Α declaration_specifiers_opt}, {Γ _}
+Ξ 0, {Α alignment_specifier}, {Α declaration_specifiers_opt}, {Γ _}
+global storage_class_specifier
+storage_class_specifier:
+Ξ Ν, {Τ "typedef"}, {Γ _}
+Ξ Ν, {Τ "extern"}, {Γ _}
+Ξ Ν, {Τ "static"}, {Γ _}
+Ξ Ν, {Τ "_Thread"}, {Τ "_local"}, {Γ _}
+Ξ Ν, {Τ "auto"}, {Γ _}
+Ξ 0, {Τ "register"}, {Γ _}
+global declaration_specifiers_opt
+declaration_specifiers_opt:
+Ξ Ν, {Α declaration_specifiers}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global type_specifier
+type_specifier:
+Ξ Ν, {Τ "void"}, {Γ _}
+Ξ Ν, {Τ "char"}, {Γ _}
+Ξ Ν, {Τ "short"}, {Γ _}
+Ξ Ν, {Τ "int"}, {Γ _}
+Ξ Ν, {Τ "long"}, {Γ _}
+Ξ Ν, {Τ "float"}, {Γ _}
+Ξ Ν, {Τ "double"}, {Γ _}
+Ξ Ν, {Τ "signed"}, {Γ _}
+Ξ Ν, {Τ "unsigned"}, {Γ _}
+Ξ Ν, {Τ "_Bool"}, {Γ _}
+Ξ Ν, {Τ "_Complex"}, {Γ _}
+Ξ Ν, {Α atomic_type_specifier}, {Γ _}
+Ξ Ν, {Α struct_or_union_specifier}, {Γ _}
+Ξ Ν, {Α enum_specifier}, {Γ _}
+Ξ 0, {Α typedef_name}, {Γ _}
+global atomic_type_specifier
+atomic_type_specifier:
+Ξ 0, {Τ "_Atomic"}, {Τ "("}, {Α type_name}, {Τ ")"}, {Γ _}
+global type_name
+type_name:
+Ξ 0, {Α specifier_qualifier_list}, {Α abstract_declarator_opt}, {Γ _}
+global specifier_qualifier_list
+specifier_qualifier_list:
+Ξ Ν, {Α type_specifier}, {Α specifier_qualifier_list_opt}, {Γ _}
+Ξ 0, {Α type_qualifier}, {Α specifier_qualifier_list_opt}, {Γ _}
+global specifier_qualifier_list_opt
+specifier_qualifier_list_opt:
+Ξ Ν, {Α specifier_qualifier_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global type_qualifier
+type_qualifier:
+Ξ Ν, {Τ "const"}, {Γ _}
+Ξ Ν, {Τ "restrict"}, {Γ _}
+Ξ Ν, {Τ "volatile"}, {Γ _}
+Ξ 0, {Τ "_Atomic"}, {Γ _}
+global abstract_declarator_opt
+abstract_declarator_opt:
+Ξ Ν, {Α abstract_declarator}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global abstract_declarator
+abstract_declarator:
+Ξ Ν, {Α pointer}, {Γ _}
+Ξ 0, {Α pointer_opt}, {Α direct_abstract_declarator}, {Γ _}
+global pointer
+pointer:
+Ξ Ν, {Τ "*"}, {Α type_qualifier_list_opt}, {Γ _}
+Ξ 0, {Τ "*"}, {Α type_qualifier_list_opt}, {Α pointer}, {Γ _}
+global type_qualifier_list_opt
+type_qualifier_list_opt:
+Ξ Ν, {Α type_qualifier_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global type_qualifier_list
+type_qualifier_list:
+Ξ Ν, {Α type_qualifier}, {Γ _}
+Ξ 0, {Α type_qualifier_list}, {Α type_qualifier}, {Γ _}
+global pointer_opt
+pointer_opt:
+Ξ Ν, {Α pointer}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global direct_abstract_declarator
+direct_abstract_declarator:
+Ξ Ν, {Τ "("}, {Α abstract_declarator}, {Τ ")"}, {Γ _}
+Ξ Ν, {Α direct_abstract_declarator_opt}, {Τ "["}, {Α type_qualifier_list_opt}, {Α assignment_expression_opt}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_abstract_declarator_opt}, {Τ "["}, {Τ "static"}, {Α type_qualifier_list_opt}, {Α assignment_expression}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_abstract_declarator_opt}, {Τ "["}, {Α type_qualifier_list}, {Τ "static"}, {Α assignment_expression}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_abstract_declarator_opt}, {Τ "["}, {Τ "*"}, {Τ "]"}, {Γ _}
+Ξ 0, {Α direct_abstract_declarator_opt}, {Τ "("}, {Α parameter_type_list_opt}, {Τ ")"}, {Γ _}
+global direct_abstract_declarator_opt
+direct_abstract_declarator_opt:
+Ξ Ν, {Α direct_abstract_declarator}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global assignment_expression_opt
+assignment_expression_opt:
+Ξ Ν, {Α assignment_expression}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global assignment_expression
+assignment_expression:
+Ξ Ν, {Α conditional_expression}, {Γ _}
+Ξ 0, {Α unary_expression}, {Α assignment_operator}, {Α assignment_expression}, {Γ _}
+global conditional_expression
+conditional_expression:
+Ξ Ν, {Α logical_OR_expression}, {Γ _}
+Ξ 0, {Α logical_OR_expression}, {Τ "?"}, {Α expression}, {Τ ":"}, {Α conditional_expression}, {Γ _}
+global logical_OR_expression
+logical_OR_expression:
+Ξ Ν, {Α logical_AND_expression}, {Γ _}
+Ξ 0, {Α logical_OR_expression}, {Τ "||"}, {Α logical_AND_expression}, {Γ _}
+global logical_AND_expression
+logical_AND_expression:
+Ξ Ν, {Α inclusive_OR_expression}, {Γ _}
+Ξ 0, {Α logical_AND_expression}, {Τ "&&"}, {Α inclusive_OR_expression}, {Γ _}
+global inclusive_OR_expression
+inclusive_OR_expression:
+Ξ Ν, {Α exclusive_OR_expression}, {Γ _}
+Ξ 0, {Α inclusive_OR_expression}, {Τ "|"}, {Α exclusive_OR_expression}, {Γ _}
+global exclusive_OR_expression
+exclusive_OR_expression:
+Ξ Ν, {Α AND_expression}, {Γ _}
+Ξ 0, {Α exclusive_OR_expression}, {Τ "^"}, {Α AND_expression}, {Γ _}
+global AND_expression
+AND_expression:
+Ξ Ν, {Α equality_expression}, {Γ _}
+Ξ 0, {Α AND_expression}, {Τ "&"}, {Α equality_expression}, {Γ _}
+global equality_expression
+equality_expression:
+Ξ Ν, {Α relational_expression}, {Γ _}
+Ξ Ν, {Α equality_expression}, {Τ "=="}, {Α relational_expression}, {Γ _}
+Ξ 0, {Α equality_expression}, {Τ "!="}, {Α relational_expression}, {Γ _}
+global relational_expression
+relational_expression:
+Ξ Ν, {Α shift_expression}, {Γ _}
+Ξ Ν, {Α relational_expression}, {Τ "<"}, {Α shift_expression}, {Γ _}
+Ξ Ν, {Α relational_expression}, {Τ ">"}, {Α shift_expression}, {Γ _}
+Ξ Ν, {Α relational_expression}, {Τ "<="}, {Α shift_expression}, {Γ _}
+Ξ 0, {Α relational_expression}, {Τ ">="}, {Α shift_expression}, {Γ _}
+global shift_expression
+shift_expression:
+Ξ Ν, {Α additive_expression}, {Γ _}
+Ξ Ν, {Α shift_expression}, {Τ "<<"}, {Α additive_expression}, {Γ _}
+Ξ 0, {Α shift_expression}, {Τ ">>"}, {Α additive_expression}, {Γ _}
+global additive_expression
+additive_expression:
+Ξ Ν, {Α multiplicative_expression}, {Γ _}
+Ξ Ν, {Α additive_expression}, {Τ "+"}, {Α multiplicative_expression}, {Γ _}
+Ξ 0, {Α additive_expression}, {Τ "-"}, {Α multiplicative_expression}, {Γ _}
+global multiplicative_expression
+multiplicative_expression:
+Ξ Ν, {Α cast_expression}, {Γ _}
+Ξ Ν, {Α multiplicative_expression}, {Τ "*"}, {Α cast_expression}, {Γ _}
+Ξ Ν, {Α multiplicative_expression}, {Τ "/"}, {Α cast_expression}, {Γ _}
+Ξ 0, {Α multiplicative_expression}, {Τ "%"}, {Α cast_expression}, {Γ _}
+global cast_expression
+cast_expression:
+Ξ Ν, {Α unary_expression}, {Γ _}
+Ξ 0, {Τ "("}, {Α type_name}, {Τ ")"}, {Α cast_expression}, {Γ _}
+global unary_expression
+unary_expression:
+Ξ Ν, {Α postfix_expression}, {Γ _}
+Ξ Ν, {Τ "++"}, {Α unary_expression}, {Γ _}
+Ξ Ν, {Τ "--"}, {Α unary_expression}, {Γ _}
+Ξ Ν, {Α unary_operator}, {Α cast_expression}, {Γ _}
+Ξ Ν, {Τ "sizeof"}, {Α unary_expression}, {Γ _}
+Ξ Ν, {Τ "sizeof"}, {Τ "("}, {Α type_name}, {Τ ")"}, {Γ _}
+Ξ 0, {Τ "_Alignof"}, {Τ "("}, {Α type_name}, {Τ ")"}, {Γ _}
+global postfix_expression
+postfix_expression:
+Ξ Ν, {Α primary_expression}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "["}, {Α expression}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "("}, {Α argument_expression_list_opt}, {Τ ")"}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "."}, {Α identifier}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "->"}, {Α identifier}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "++"}, {Γ _}
+Ξ Ν, {Α postfix_expression}, {Τ "__"}, {Γ _}
+Ξ Ν, {Τ "("}, {Α type_name}, {Τ ")"}, {Τ "{"}, {Α initializer_list}, {Τ "}"}, {Γ _}
+Ξ 0, {Τ "("}, {Α type_name}, {Τ ")"}, {Τ "{"}, {Α initializer_list}, {Τ ","}, {Τ "}"}, {Γ _}
+global primary_expression
+primary_expression:
+Ξ Ν, {Α identifier}, {Γ _}
+Ξ Ν, {Α constant}, {Γ _}
+Ξ Ν, {Α string_literal}, {Γ _}
+Ξ Ν, {Τ "("}, {Α expression}, {Τ ")"}, {Γ _}
+Ξ 0, {Α generic_selection}, {Γ _}
+global identifier
+identifier:
+Ξ Ν, {Α identifier_nondigit}, {Γ _}
+Ξ Ν, {Α identifier}, {Α identifier_nondigit}, {Γ _}
+Ξ 0, {Α identifier}, {Α digit}, {Γ _}
+global identifier_nondigit
+identifier_nondigit:
+Ξ Ν, {Α nondigit}, {Γ _}
+Ξ 0, {Α universal_character_name}, {Γ _}
+global nondigit
+nondigit:
+Ξ Ν, {Τ "_"}, {Γ _}
+Ξ Ν, {Τ "a"}, {Γ _}
+Ξ Ν, {Τ "b"}, {Γ _}
+Ξ Ν, {Τ "c"}, {Γ _}
+Ξ Ν, {Τ "d"}, {Γ _}
+Ξ Ν, {Τ "e"}, {Γ _}
+Ξ Ν, {Τ "f"}, {Γ _}
+Ξ Ν, {Τ "g"}, {Γ _}
+Ξ Ν, {Τ "h"}, {Γ _}
+Ξ Ν, {Τ "i"}, {Γ _}
+Ξ Ν, {Τ "j"}, {Γ _}
+Ξ Ν, {Τ "k"}, {Γ _}
+Ξ Ν, {Τ "l"}, {Γ _}
+Ξ Ν, {Τ "m"}, {Γ _}
+Ξ Ν, {Τ "A"}, {Γ _}
+Ξ Ν, {Τ "B"}, {Γ _}
+Ξ Ν, {Τ "C"}, {Γ _}
+Ξ Ν, {Τ "D"}, {Γ _}
+Ξ Ν, {Τ "E"}, {Γ _}
+Ξ Ν, {Τ "F"}, {Γ _}
+Ξ Ν, {Τ "G"}, {Γ _}
+Ξ Ν, {Τ "H"}, {Γ _}
+Ξ Ν, {Τ "I"}, {Γ _}
+Ξ Ν, {Τ "J"}, {Γ _}
+Ξ Ν, {Τ "K"}, {Γ _}
+Ξ Ν, {Τ "L"}, {Γ _}
+Ξ Ν, {Τ "M"}, {Γ _}
+Ξ Ν, {Τ "n"}, {Γ _}
+Ξ Ν, {Τ "o"}, {Γ _}
+Ξ Ν, {Τ "p"}, {Γ _}
+Ξ Ν, {Τ "q"}, {Γ _}
+Ξ Ν, {Τ "r"}, {Γ _}
+Ξ Ν, {Τ "s"}, {Γ _}
+Ξ Ν, {Τ "t"}, {Γ _}
+Ξ Ν, {Τ "u"}, {Γ _}
+Ξ Ν, {Τ "v"}, {Γ _}
+Ξ Ν, {Τ "w"}, {Γ _}
+Ξ Ν, {Τ "x"}, {Γ _}
+Ξ Ν, {Τ "y"}, {Γ _}
+Ξ Ν, {Τ "z"}, {Γ _}
+Ξ Ν, {Τ "N"}, {Γ _}
+Ξ Ν, {Τ "O"}, {Γ _}
+Ξ Ν, {Τ "P"}, {Γ _}
+Ξ Ν, {Τ "Q"}, {Γ _}
+Ξ Ν, {Τ "R"}, {Γ _}
+Ξ Ν, {Τ "S"}, {Γ _}
+Ξ Ν, {Τ "T"}, {Γ _}
+Ξ Ν, {Τ "U"}, {Γ _}
+Ξ Ν, {Τ "V"}, {Γ _}
+Ξ Ν, {Τ "W"}, {Γ _}
+Ξ Ν, {Τ "X"}, {Γ _}
+Ξ Ν, {Τ "Y"}, {Γ _}
+Ξ 0, {Τ "Z"}, {Γ _}
+global universal_character_name
+universal_character_name:
+Ξ Ν, {Τ "\u"}, {Α hex_quad}, {Γ _}
+Ξ 0, {Τ "\U"}, {Α hex_quad}, {Α hex_quad}, {Γ _}
+global hex_quad
+hex_quad:
+Ξ 0, {Α hexadecimal_digit}, {Α hexadecimal_digit}, {Α hexadecimal_digit}, {Α hexadecimal_digit}, {Γ _}
+global hexadecimal_digit
+hexadecimal_digit:
+Ξ Ν, {Τ "0"}, {Γ _}
+Ξ Ν, {Τ "1"}, {Γ _}
+Ξ Ν, {Τ "2"}, {Γ _}
+Ξ Ν, {Τ "3"}, {Γ _}
+Ξ Ν, {Τ "4"}, {Γ _}
+Ξ Ν, {Τ "5"}, {Γ _}
+Ξ Ν, {Τ "6"}, {Γ _}
+Ξ Ν, {Τ "7"}, {Γ _}
+Ξ Ν, {Τ "8"}, {Γ _}
+Ξ Ν, {Τ "9"}, {Γ _}
+Ξ Ν, {Τ "a"}, {Γ _}
+Ξ Ν, {Τ "b"}, {Γ _}
+Ξ Ν, {Τ "c"}, {Γ _}
+Ξ Ν, {Τ "d"}, {Γ _}
+Ξ Ν, {Τ "e"}, {Γ _}
+Ξ Ν, {Τ "f"}, {Γ _}
+Ξ Ν, {Τ "A"}, {Γ _}
+Ξ Ν, {Τ "B"}, {Γ _}
+Ξ Ν, {Τ "C"}, {Γ _}
+Ξ Ν, {Τ "D"}, {Γ _}
+Ξ Ν, {Τ "E"}, {Γ _}
+Ξ 0, {Τ "F"}, {Γ _}
+global digit
+digit:
+Ξ Ν, {Τ "0"}, {Γ _}
+Ξ Ν, {Τ "1"}, {Γ _}
+Ξ Ν, {Τ "2"}, {Γ _}
+Ξ Ν, {Τ "3"}, {Γ _}
+Ξ Ν, {Τ "4"}, {Γ _}
+Ξ Ν, {Τ "5"}, {Γ _}
+Ξ Ν, {Τ "6"}, {Γ _}
+Ξ Ν, {Τ "7"}, {Γ _}
+Ξ Ν, {Τ "8"}, {Γ _}
+Ξ 0, {Τ "9"}, {Γ _}
+global constant
+constant:
+Ξ Ν, {Α integer_constant}, {Γ _}
+Ξ Ν, {Α floating_constant}, {Γ _}
+Ξ Ν, {Α enumeration_constant}, {Γ _}
+Ξ 0, {Α character_constant}, {Γ _}
+global integer_constant
+integer_constant:
+Ξ Ν, {Α decimal_constant}, {Α integer_suffix_opt}, {Γ _}
+Ξ Ν, {Α octal_constant}, {Α integer_suffix_opt}, {Γ _}
+Ξ 0, {Α hexadecimal_constant}, {Α integer_suffix_opt}, {Γ _}
+global decimal_constant
+decimal_constant:
+Ξ Ν, {Α nonzero_digit}, {Γ _}
+Ξ 0, {Α decimal_constant}, {Α digit}, {Γ _}
+global nonzero_digit
+nonzero_digit:
+Ξ Ν, {Τ "1"}, {Γ _}
+Ξ Ν, {Τ "2"}, {Γ _}
+Ξ Ν, {Τ "3"}, {Γ _}
+Ξ Ν, {Τ "4"}, {Γ _}
+Ξ Ν, {Τ "5"}, {Γ _}
+Ξ Ν, {Τ "6"}, {Γ _}
+Ξ Ν, {Τ "7"}, {Γ _}
+Ξ Ν, {Τ "8"}, {Γ _}
+Ξ 0, {Τ "9"}, {Γ _}
+global integer_suffix_opt
+integer_suffix_opt:
+Ξ Ν, {Α integer_suffix}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global integer_suffix
+integer_suffix:
+Ξ Ν, {Α unsigned_suffix}, {Α long_suffix_opt}, {Γ _}
+Ξ Ν, {Α unsigned_suffix}, {Α long_long_suffix}, {Γ _}
+Ξ Ν, {Α long_suffix}, {Α unsigned_suffix_opt}, {Γ _}
+Ξ 0, {Α long_long_suffix}, {Α unsigned_suffix_opt}, {Γ _}
+global unsigned_suffix
+unsigned_suffix:
+Ξ Ν, {Τ "u"}, {Γ _}
+Ξ 0, {Τ "U"}, {Γ _}
+global long_suffix_opt
+long_suffix_opt:
+Ξ Ν, {Α long_suffix}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global long_suffix
+long_suffix:
+Ξ Ν, {Τ "l"}, {Γ _}
+Ξ 0, {Τ "L"}, {Γ _}
+global long_long_suffix
+long_long_suffix:
+Ξ Ν, {Τ "ll"}, {Γ _}
+Ξ 0, {Τ "LL"}, {Γ _}
+global unsigned_suffix_opt
+unsigned_suffix_opt:
+Ξ Ν, {Α unsigned_suffix}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global octal_constant
+octal_constant:
+Ξ Ν, {Τ "0"}, {Γ _}
+Ξ 0, {Α octal_constant}, {Α octal_digit}, {Γ _}
+global octal_digit
+octal_digit:
+Ξ Ν, {Τ "0"}, {Γ _}
+Ξ Ν, {Τ "1"}, {Γ _}
+Ξ Ν, {Τ "2"}, {Γ _}
+Ξ Ν, {Τ "3"}, {Γ _}
+Ξ Ν, {Τ "4"}, {Γ _}
+Ξ Ν, {Τ "5"}, {Γ _}
+Ξ Ν, {Τ "6"}, {Γ _}
+Ξ 0, {Τ "7"}, {Γ _}
+global hexadecimal_constant
+hexadecimal_constant:
+Ξ Ν, {Α hexadecimal_prefix}, {Α hexadecimal_digit}, {Γ _}
+Ξ 0, {Α hexadecimal_constant}, {Α hexadecimal_digit}, {Γ _}
+global hexadecimal_prefix
+hexadecimal_prefix:
+Ξ Ν, {Τ "0x"}, {Γ _}
+Ξ 0, {Τ "0X"}, {Γ _}
+global floating_constant
+floating_constant:
+Ξ Ν, {Α decimal_floating_constant}, {Γ _}
+Ξ 0, {Α hexadecimal_floating_constant}, {Γ _}
+global decimal_floating_constant
+decimal_floating_constant:
+Ξ Ν, {Α fractional_constant}, {Α exponent_part_opt}, {Α floating_suffix_opt}, {Γ _}
+Ξ 0, {Α digit_sequence}, {Α exponent_part}, {Α floating_suffix_opt}, {Γ _}
+global fractional_constant
+fractional_constant:
+Ξ Ν, {Α digit_sequence_opt}, {Τ "."}, {Α digit_sequence}, {Γ _}
+Ξ 0, {Α digit_sequence}, {Τ "."}, {Γ _}
+global digit_sequence_opt
+digit_sequence_opt:
+Ξ Ν, {Α digit_sequence}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global digit_sequence
+digit_sequence:
+Ξ Ν, {Α digit}, {Γ _}
+Ξ 0, {Α digit_sequence}, {Α digit}, {Γ _}
+global exponent_part_opt
+exponent_part_opt:
+Ξ Ν, {Α exponent_part}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global exponent_part
+exponent_part:
+Ξ Ν, {Τ "e"}, {Α sign_opt}, {Α digit_sequence}, {Γ _}
+Ξ 0, {Τ "E"}, {Α sign_opt}, {Α digit_sequence}, {Γ _}
+global sign_opt
+sign_opt:
+Ξ Ν, {Α sign}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global sign
+sign:
+Ξ Ν, {Τ "+"}, {Γ _}
+Ξ 0, {Τ "-"}, {Γ _}
+global floating_suffix_opt
+floating_suffix_opt:
+Ξ Ν, {Α floating_suffix}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global floating_suffix
+floating_suffix:
+Ξ Ν, {Τ "f"}, {Γ _}
+Ξ Ν, {Τ "l"}, {Γ _}
+Ξ Ν, {Τ "F"}, {Γ _}
+Ξ 0, {Τ "L"}, {Γ _}
+global hexadecimal_floating_constant
+hexadecimal_floating_constant:
+Ξ Ν, {Α hexadecimal_prefix}, {Α hexadecimal_fractional_constant}, {Α binary_exponent_part}, {Α floating_suffix_opt}, {Γ _}
+Ξ 0, {Α hexadecimal_prefix}, {Α hexadecimal_digit_sequence}, {Α binary_exponent_part}, {Α floating_suffix_opt}, {Γ _}
+global hexadecimal_fractional_constant
+hexadecimal_fractional_constant:
+Ξ Ν, {Α hexadecimal_digit_sequence_opt}, {Τ "."}, {Α hexadecimal_digit_sequence}, {Γ _}
+Ξ 0, {Α hexadecimal_digit_sequence}, {Τ "."}, {Γ _}
+global hexadecimal_digit_sequence_opt
+hexadecimal_digit_sequence_opt:
+Ξ Ν, {Α hexadecimal_digit_sequence}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global hexadecimal_digit_sequence
+hexadecimal_digit_sequence:
+Ξ Ν, {Α hexadecimal_digit}, {Γ _}
+Ξ 0, {Α hexadecimal_digit_sequence}, {Α hexadecimal_digit}, {Γ _}
+global binary_exponent_part
+binary_exponent_part:
+Ξ Ν, {Τ "p"}, {Α sign_opt}, {Α digit_sequence}, {Γ _}
+Ξ 0, {Τ "P"}, {Α sign_opt}, {Α digit_sequence}, {Γ _}
+global enumeration_constant
+enumeration_constant:
+Ξ 0, {Α identifier}, {Γ _}
+global character_constant
+character_constant:
+Ξ Ν, {Τ "'"}, {Α c_char_sequence}, {Τ "'"}, {Γ _}
+Ξ Ν, {Τ "L'"}, {Α c_char_sequence}, {Τ "'"}, {Γ _}
+Ξ Ν, {Τ "u'"}, {Α c_char_sequence}, {Τ "'"}, {Γ _}
+Ξ 0, {Τ "U'"}, {Α c_char_sequence}, {Τ "'"}, {Γ _}
+global c_char_sequence
+c_char_sequence:
+Ξ Ν, {Α c_char}, {Γ _}
+Ξ 0, {Α c_char_sequence}, {Α c_char}, {Γ _}
+global c_char
+c_char:
+Ξ 0, {Α escape_sequence}, {Γ _}
+global escape_sequence
+escape_sequence:
+Ξ Ν, {Α simple_escape_sequence}, {Γ _}
+Ξ Ν, {Α octal_escape_sequence}, {Γ _}
+Ξ Ν, {Α hexadecimal_escape_sequence}, {Γ _}
+Ξ 0, {Α universal_character_name}, {Γ _}
+global simple_escape_sequence
+simple_escape_sequence:
+Ξ Ν, {Τ "\'"}, {Γ _}
+Ξ Ν, {Τ '\"'}, {Γ _}
+Ξ Ν, {Τ "\?"}, {Γ _}
+Ξ Ν, {Τ "\\"}, {Γ _}
+Ξ Ν, {Τ "\a"}, {Γ _}
+Ξ Ν, {Τ "\b"}, {Γ _}
+Ξ Ν, {Τ "\f"}, {Γ _}
+Ξ Ν, {Τ "\n"}, {Γ _}
+Ξ Ν, {Τ "\r"}, {Γ _}
+Ξ Ν, {Τ "\t"}, {Γ _}
+Ξ 0, {Τ "\v"}, {Γ _}
+global octal_escape_sequence
+octal_escape_sequence:
+Ξ Ν, {Τ "\"}, {Α octal_digit}, {Γ _}
+Ξ Ν, {Τ "\"}, {Α octal_digit}, {Α octal_digit}, {Γ _}
+Ξ 0, {Τ "\"}, {Α octal_digit}, {Α octal_digit}, {Α octal_digit}, {Γ _}
+global hexadecimal_escape_sequence
+hexadecimal_escape_sequence:
+Ξ Ν, {Τ "\x"}, {Α hexadecimal_digit}, {Γ _}
+Ξ 0, {Α hexadecimal_escape_sequence}, {Α hexadecimal_digit}, {Γ _}
+global string_literal
+string_literal:
+Ξ 0, {Α encoding_prefix_opt}, {Τ '"'}, {Α s_char_sequence_opt}, {Τ '"'}, {Γ _}
+global encoding_prefix_opt
+encoding_prefix_opt:
+Ξ Ν, {Α encoding_prefix}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global encoding_prefix
+encoding_prefix:
+Ξ Ν, {Τ "u8"}, {Γ _}
+Ξ Ν, {Τ "u"}, {Γ _}
+Ξ Ν, {Τ "U"}, {Γ _}
+Ξ 0, {Τ "L"}, {Γ _}
+global s_char_sequence_opt
+s_char_sequence_opt:
+Ξ Ν, {Α s_char_sequence}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global s_char_sequence
+s_char_sequence:
+Ξ Ν, {Α s_char}, {Γ _}
+Ξ 0, {Α s_char_sequence}, {Α s_char}, {Γ _}
+global s_char
+s_char:
+Ξ 0, {Α escape_sequence}, {Γ _}
+global expression
+expression:
+Ξ Ν, {Α assignment_expression}, {Γ _}
+Ξ 0, {Α expression}, {Τ ","}, {Α assignment_expression}, {Γ _}
+global generic_selection
+generic_selection:
+Ξ 0, {Τ "_Generic"}, {Τ "("}, {Α assignment_expression}, {Τ ","}, {Α generic_assoc_list}, {Τ ")"}, {Γ _}
+global generic_assoc_list
+generic_assoc_list:
+Ξ Ν, {Α generic_association}, {Γ _}
+Ξ 0, {Α generic_assoc_list}, {Τ ","}, {Α generic_association}, {Γ _}
+global generic_association
+generic_association:
+Ξ Ν, {Α type_name}, {Τ ":"}, {Α assignment_expression}, {Γ _}
+Ξ 0, {Τ "default"}, {Τ ":"}, {Α assignment_expression}, {Γ _}
+global argument_expression_list_opt
+argument_expression_list_opt:
+Ξ Ν, {Α argument_expression_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global argument_expression_list
+argument_expression_list:
+Ξ Ν, {Α assignment_expression}, {Γ _}
+Ξ 0, {Α argument_expression_list}, {Τ ","}, {Α assignment_expression}, {Γ _}
+global initializer_list
+initializer_list:
+Ξ Ν, {Α designation_opt}, {Α initializer}, {Γ _}
+Ξ 0, {Α initializer_list}, {Τ ","}, {Α designation_opt}, {Α initializer}, {Γ _}
+global designation_opt
+designation_opt:
+Ξ Ν, {Α designation}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global designation
+designation:
+Ξ 0, {Α designator_list}, {Τ "="}, {Γ _}
+global designator_list
+designator_list:
+Ξ Ν, {Α designator}, {Γ _}
+Ξ 0, {Α designator_list}, {Α designator}, {Γ _}
+global designator
+designator:
+Ξ Ν, {Τ "["}, {Α constant_expression}, {Τ "]"}, {Γ _}
+Ξ 0, {Τ "."}, {Α identifier}, {Γ _}
+global constant_expression
+constant_expression:
+Ξ 0, {Α conditional_expression}, {Γ _}
+global initializer
+initializer:
+Ξ Ν, {Α assignment_expression}, {Γ _}
+Ξ Ν, {Τ "{"}, {Α initializer_list}, {Τ "}"}, {Γ _}
+Ξ 0, {Τ "{"}, {Α initializer_list}, {Τ ","}, {Τ "}"}, {Γ _}
+global unary_operator
+unary_operator:
+Ξ Ν, {Τ "&"}, {Γ _}
+Ξ Ν, {Τ "*"}, {Γ _}
+Ξ Ν, {Τ "+"}, {Γ _}
+Ξ Ν, {Τ "-"}, {Γ _}
+Ξ Ν, {Τ "~"}, {Γ _}
+Ξ 0, {Τ "!"}, {Γ _}
+global assignment_operator
+assignment_operator:
+Ξ Ν, {Τ "="}, {Γ _}
+Ξ Ν, {Τ "*="}, {Γ _}
+Ξ Ν, {Τ "/="}, {Γ _}
+Ξ Ν, {Τ "%="}, {Γ _}
+Ξ Ν, {Τ "+="}, {Γ _}
+Ξ Ν, {Τ "-="}, {Γ _}
+Ξ Ν, {Τ "<<="}, {Γ _}
+Ξ Ν, {Τ ">>="}, {Γ _}
+Ξ Ν, {Τ "&="}, {Γ _}
+Ξ Ν, {Τ "^="}, {Γ _}
+Ξ 0, {Τ "|="}, {Γ _}
+global parameter_type_list_opt
+parameter_type_list_opt:
+Ξ Ν, {Α parameter_type_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global parameter_type_list
+parameter_type_list:
+Ξ Ν, {Α parameter_list}, {Γ _}
+Ξ 0, {Α parameter_list}, {Τ ","}, {Τ "..."}, {Γ _}
+global parameter_list
+parameter_list:
+Ξ Ν, {Α parameter_declaration}, {Γ _}
+Ξ 0, {Α parameter_list}, {Τ ","}, {Α parameter_declaration}, {Γ _}
+global parameter_declaration
+parameter_declaration:
+Ξ Ν, {Α declaration_specifiers}, {Α declarator}, {Γ _}
+Ξ 0, {Α declaration_specifiers}, {Α abstract_declarator_opt}, {Γ _}
+global declarator
+declarator:
+Ξ 0, {Α pointer_opt}, {Α direct_declarator}, {Γ _}
+global direct_declarator
+direct_declarator:
+Ξ Ν, {Α identifier}, {Γ _}
+Ξ Ν, {Τ "("}, {Α declarator}, {Τ ")"}, {Γ _}
+Ξ Ν, {Α direct_declarator}, {Τ "["}, {Α type_qualifier_list_opt}, {Α assignment_expression_opt}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_declarator}, {Τ "["}, {Τ "static"}, {Α type_qualifier_list_opt}, {Α assignment_expression}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_declarator}, {Τ "["}, {Α type_qualifier_list}, {Τ "static"}, {Α assignment_expression}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_declarator}, {Τ "["}, {Α type_qualifier_list_opt}, {Τ "*"}, {Τ "]"}, {Γ _}
+Ξ Ν, {Α direct_declarator}, {Τ "("}, {Α parameter_type_list}, {Τ ")"}, {Γ _}
+Ξ 0, {Α direct_declarator}, {Τ "("}, {Α identifier_list_opt}, {Τ ")"}, {Γ _}
+global identifier_list_opt
+identifier_list_opt:
+Ξ Ν, {Α identifier_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global identifier_list
+identifier_list:
+Ξ Ν, {Α identifier}, {Γ _}
+Ξ 0, {Α identifier_list}, {Τ ","}, {Α identifier}, {Γ _}
+global struct_or_union_specifier
+struct_or_union_specifier:
+Ξ Ν, {Α struct_or_union}, {Α identifier_opt}, {Τ "{"}, {Α struct_declaration_list}, {Τ "}"}, {Γ _}
+Ξ 0, {Α struct_or_union}, {Α identifier}, {Γ _}
+global struct_or_union
+struct_or_union:
+Ξ Ν, {Τ "struct"}, {Γ _}
+Ξ 0, {Τ "union"}, {Γ _}
+global identifier_opt
+identifier_opt:
+Ξ Ν, {Α identifier}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global struct_declaration_list
+struct_declaration_list:
+Ξ Ν, {Α struct_declaration}, {Γ _}
+Ξ 0, {Α struct_declaration_list}, {Α struct_declaration}, {Γ _}
+global struct_declaration
+struct_declaration:
+Ξ Ν, {Α specifier_qualifier_list}, {Α struct_declarator_list_opt}, {Τ ";"}, {Γ _}
+Ξ 0, {Α static_assert_declaration}, {Γ _}
+global struct_declarator_list_opt
+struct_declarator_list_opt:
+Ξ Ν, {Α struct_declarator_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global struct_declarator_list
+struct_declarator_list:
+Ξ Ν, {Α struct_declarator}, {Γ _}
+Ξ 0, {Α struct_declarator_list}, {Τ ","}, {Α struct_declarator}, {Γ _}
+global struct_declarator
+struct_declarator:
+Ξ Ν, {Α declarator}, {Γ _}
+Ξ 0, {Α declarator_opt}, {Τ ":"}, {Α constant_expression}, {Γ _}
+global declarator_opt
+declarator_opt:
+Ξ Ν, {Α declarator}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global static_assert_declaration
+static_assert_declaration:
+Ξ 0, {Τ "_Static"}, {Τ "_assert"}, {Τ "("}, {Α constant_expression}, {Τ ","}, {Α string_literal}, {Τ ")"}, {Τ ";"}, {Γ _}
+global enum_specifier
+enum_specifier:
+Ξ Ν, {Τ "enum"}, {Α identifier_opt}, {Τ "{"}, {Α enumerator_list}, {Τ "}"}, {Γ _}
+Ξ Ν, {Τ "enum"}, {Α identifier_opt}, {Τ "{"}, {Α enumerator_list}, {Τ ","}, {Τ "}"}, {Γ _}
+Ξ 0, {Τ "enum"}, {Α identifier}, {Γ _}
+global enumerator_list
+enumerator_list:
+Ξ Ν, {Α enumerator}, {Γ _}
+Ξ 0, {Α enumerator_list}, {Τ ","}, {Α enumerator}, {Γ _}
+global enumerator
+enumerator:
+Ξ Ν, {Α enumeration_constant}, {Γ _}
+Ξ 0, {Α enumeration_constant}, {Τ "="}, {Α constant_expression}, {Γ _}
+global typedef_name
+typedef_name:
+Ξ 0, {Α identifier}, {Γ _}
+global function_specifier
+function_specifier:
+Ξ Ν, {Τ "inline"}, {Γ _}
+Ξ 0, {Τ "_No"}, {Τ "return"}, {Γ _}
+global alignment_specifier
+alignment_specifier:
+Ξ Ν, {Τ "_Alignas"}, {Τ "("}, {Α type_name}, {Τ ")"}, {Γ _}
+Ξ 0, {Τ "_Alignas"}, {Τ "("}, {Α constant_expression}, {Τ ")"}, {Γ _}
+global init_declarator_list_opt
+init_declarator_list_opt:
+Ξ Ν, {Α init_declarator_list}, {Γ _}
+Ξ 0, {Τ ""}, {Γ _}
+global init_declarator_list
+init_declarator_list:
+Ξ Ν, {Α init_declarator}, {Γ _}
+Ξ 0, {Α init_declarator_list}, {Τ ","}, {Α init_declarator}, {Γ _}
+global init_declarator
+init_declarator:
+Ξ Ν, {Α declarator}, {Γ _}
+Ξ 0, {Α declarator}, {Τ "="}, {Α initializer}, {Γ _}

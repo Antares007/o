@@ -11,7 +11,7 @@
     perror(msg);                                                               \
     exit(EXIT_FAILURE);                                                        \
   } while (0)
-void* mapfile(const char *filename, size_t *size) {
+void *mapfile(const char *filename, size_t *size) {
   int fd = open(filename, O_RDWR);
   struct stat sb;
   if (fd == -1)
@@ -32,10 +32,11 @@ typedef void (*pith_t)(uint64_t, void *, void *);
 typedef void (*bark_t)(pith_t);
 typedef void (*absurd)();
 
-void pith (uint64_t n, void *h, void *t){
-  printf("hello %p %p\n",h,t);
-  if(t) ((void (*)(pith_t))t)(pith);
-  printf("end %p %p\n",h,t);
+void pith(uint64_t n, void *h, void *t) {
+  printf("hello %p %p\n", h, t);
+  if (t)
+    ((void (*)(pith_t))t)(pith);
+  printf("end %p %p\n", h, t);
 }
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -43,9 +44,9 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   size_t size;
-  void * addr = mapfile(argv[1], &size);
+  void *addr = mapfile(argv[1], &size);
   bark_t b = addr;
-  ((uint8_t*)addr)[size-1] = 0xc3;
+  ((uint8_t *)addr)[size - 1] = 0xc3;
   b(pith);
   printf("done\n");
   return 0;

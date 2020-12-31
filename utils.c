@@ -18,4 +18,3 @@ void putuid(uint32_t i) { printf("%u", i); }
 
 void putiq(int64_t i) { printf("%ld", i); }
 void putid(int32_t i) { printf("%d", i); }
-
