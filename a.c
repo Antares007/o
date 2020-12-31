@@ -1,26 +1,46 @@
-#define A(n, v) void n() v
-A(name, { int i = 1; })
-typedef void (*pith_t)(int, int, void *);
-typedef void (*bark_t)(pith_t, int, void *);
-void push(void *, void *);
-void *pop(void *);
+#define NN_(a, b) a##b
+#define NN(a, b) NN_(a, b)
+#define NNN(a, b, c) NN(NN(a, b), c)
+#define NNNN(a, b, c, d) NN(NN(a, b), NN(c, d))
+#define MB(ob) (((void **)(ob))[1])
+#define MO(ob) (((void **)(ob))[0])
+typedef void (*pith_t)(int, void *, void *, void *);
+#define PS(g, f, ...)                                                          \
+  typedef void (*NNNN(g, o, f, _pith_t))();                                    \
+  void NNNN(g, o, f, _pith)(int m, void *s, void *e, void *ob) {               \
+    pith_t o = MO(ob);                                                         \
+    void *b = MB(ob);                                                          \
+    if (m < 0)                                                                 \
+      o(m, s, e, b);                                                           \
+    else
+#define PE(g, f)                                                               \
+  }                                                                            \
+  void NNN(g, o, f)(pith_t o, void *s, void *e, void *b) {                     \
+    f(NNNN(g, o, f, _pith), s, e, (void *[]){o, b});                           \
+  }
 
-void f(pith_t o, int a, void *b) {
-  o(0, a + 1, b); //
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+void f(void (*o)(int, void *, void *, void *), void *s, void *e, void *b) {
+  uint64_t stride = (uint64_t)s;
+  size_t size = stride * ((uint64_t)e);
+  void *m = malloc(size);
+  if (m == 0)
+    return o(-1, 0, 0, b);
+  o(stride, m, m + size, b);
+  free(m);
 }
-void g(pith_t o, int a, void *b) {
-  o(0, a * 3, b); //
+PS(g, f) { o(m, s, e, b); }
+PE(g, f)
+
+void pith(int m, void *s, void *e, void *b) {
+  printf("pith: %d %p %p %p\n", m, s, e, b);
+  printf("pith: %ld \n", (e - s));
 }
-void pf(int m, int a, void *b) {
-  pith_t o = pop(b);
-  bark_t n = pop(b);
-  if (m)
-    o(m, a, b);
-  else
-    n(o, a, b);
-}
-void fg(pith_t o, int a, void *b) {
-  push(b, g);
-  push(b, o);
-  f(pf, a, b); //
+
+int main() {
+  gof(pith, (void *)4, (void *)2, (void *)9);
+  return 0;
 }
