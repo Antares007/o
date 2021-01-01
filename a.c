@@ -6,13 +6,11 @@
 #define MO(ob) (((void **)(ob))[0])
 typedef void (*pith_t)(int, void *, void *, void *);
 #define PS(g, f, ...)                                                          \
-  typedef void (*NNNN(g, o, f, _pith_t))();                                    \
   void NNNN(g, o, f, _pith)(int m, void *s, void *e, void *ob) {               \
     pith_t o = MO(ob);                                                         \
     void *b = MB(ob);                                                          \
     if (m < 0)                                                                 \
-      o(m, s, e, b);                                                           \
-    else
+      return o(m, s, e, b);
 #define PE(g, f)                                                               \
   }                                                                            \
   void NNN(g, o, f)(pith_t o, void *s, void *e, void *b) {                     \
@@ -32,8 +30,15 @@ void f(void (*o)(int, void *, void *, void *), void *s, void *e, void *b) {
   o(stride, m, m + size, b);
   free(m);
 }
-PS(g, f) { o(m, s, e, b); }
+PS(g, f) 
+  o(m, s, e, b); //
 PE(g, f)
+PS(g, gof) 
+  o(m, s, e, b); //
+PE(g, gof)
+PS(a, gogof) 
+  o(m, s, e, b); //
+PE(a, gogof)
 
 void pith(int m, void *s, void *e, void *b) {
   printf("pith: %d %p %p %p\n", m, s, e, b);
@@ -41,6 +46,6 @@ void pith(int m, void *s, void *e, void *b) {
 }
 
 int main() {
-  gof(pith, (void *)4, (void *)2, (void *)9);
+  aogogof(pith, (void *)4, (void *)2, (void *)9);
   return 0;
 }

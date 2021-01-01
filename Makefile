@@ -1,4 +1,4 @@
-CC=clang -O0 -g -std=gnu99
+CC=clang -O3 -g -std=gnu99
 
 parse.out: parse.c g.o
 	${CC} $^ -o $@ 
