@@ -1,1 +1,7 @@
 -std=gnu99
+-I/usr/include/SDL2
+-D_REENTRANT
+-L/usr/lib
+-pthread
+-lSDL2
+-Wno-multichar

@@ -16,40 +16,6 @@ uint32_t rnd() {
   return m2;
 }
 
-void p(void (*o)(int, int, uint32_t)) {
-  o(1, 1, -1);
-  o(2, 2, -1);
-}
-
-void mainb(void (*o)(void (*b)(void (*)(int, int, uint32_t)))) {
-  o(p);
-  o(p);
-}
-
-struct windowBark { //
-};
-
-struct aPith {
-  void (*p)(struct aPith *, int x, int y, uint32_t color);
-};
-
-struct bPith {
-  void (*frame)(struct bPith *, void (*p)(struct aPith *));
-};
-
-void testa(struct aPith *o) { //
-  o->p(o, 1, 1, -1);
-}
-
-void test(struct bPith *o) {
-  //
-  o->frame(o, testa);
-}
-
-void windowBark(void (*o)(int x, int y, uint32_t color)) {
-  //
-}
-
 int main() {
   Display *display = XOpenDisplay(NULL);
   Window windowRoot = DefaultRootWindow(display);
