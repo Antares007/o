@@ -1,22 +1,5 @@
 #include "a.h"
-#define AA(t, a, b)                                                            \
-  A(t, a);                                                                     \
-  A(t, b);
-#define AAAA(t, a, b, c, d)                                                    \
-  AA(t, a, b);                                                                 \
-  AA(t, c, d);
-#define AAAAAAAA(t, a, b, c, d, e, f, g, h)                                    \
-  AAAA(t, a, b, c, d);                                                         \
-  AAAA(t, e, f, g, h);
-#define PP(t, a, b)                                                            \
-  P(t, a);                                                                     \
-  P(t, b);
-#define PPPP(t, a, b, c, d)                                                    \
-  PP(t, a, b);                                                                 \
-  PP(t, c, d);
-#define PPPPPPPP(t, a, b, c, d, e, f, g, h)                                    \
-  PPPP(t, a, b, c, d);                                                         \
-  PPPP(t, e, f, g, h);
+
 //#define S(name, str)                                                           \
 //  void name(void (*o)(int, void *, void *, void *), void *s, void *e,          \
 //            void *b) {                                                         \
@@ -37,21 +20,9 @@
 #include <stddef.h>
 #include <stdio.h>
 
-N(sample1) {
-  float fN = 0.1f;
-  float fF = 1000.0f;
-  float fV = 90.0f;
-  float fA = 800.0f / 600.0f;
-  float fVR = 1.0f / tanf(fV * 0.5f / 180.0f * 3.14159f);
-  PPPP(float, fA * fVR, 0,   0,                      0);
-  PPPP(float, 0,        fVR, 0,                      0);
-  PPPP(float, 0,        0,   fF / (fF - fN),         1);
-  PPPP(float, 0,        0,   (-fF * fN) / (fF - fN), 0);
-  PPPP(float, 0,0,0,0);
-}
 N(go) { C(o, 0, P(const char *, "drawline"); P(int, 320);); }
 N(tri) {
-  AAAAAAAA(float, xx, xy, yx, yy, zx, zy, wx, wy);
+  A8(float, xx, xy, yx, yy, zx, zy, wx, wy);
   A(SDL_Renderer *, renderer);
   SDL_RenderDrawLine(renderer, xx + wx, xy + wy, yx + wx, yy + wy);
   SDL_RenderDrawLine(renderer, yx + wx, yy + wy, zx + wx, zy + wy);
@@ -65,7 +36,8 @@ N(win) {
     printf("TTF_Init: %s\n", TTF_GetError());
     exit(2);
   }
-  TTF_Font *Sans = TTF_OpenFont("PragmataPro.ttf", 32); // this opens a font style and sets a size
+  TTF_Font *Sans = TTF_OpenFont("PragmataPro.ttf",
+                                32); // this opens a font style and sets a size
   printf("%p\n", Sans);
   SDL_Color White = {255, 255, 255};
   SDL_Surface *surfaceMessage =
@@ -76,7 +48,9 @@ N(win) {
     SDL_Renderer *renderer = NULL;
     if (!(err = SDL_CreateWindowAndRenderer(w, h, 0, &window, &renderer))) {
       SDL_bool done = SDL_FALSE;
-      printf("b, %p\n", renderer);
+      char a[1024];
+      snprintf(a, sizeof a, "b, %p\n", renderer);
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "title", a, 0);
       while (!done) {
         SDL_SetRenderDrawColor(renderer, 0, 128, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
@@ -92,7 +66,7 @@ N(win) {
           for (int j = 0; j < 700; j += 63) {
             SDL_SetRenderDrawColor(renderer, 255 - i % 50, 255 - i,
                                    100 + (j % 155), SDL_ALPHA_OPAQUE);
-            C(tri, o, PPPPPPPP(float, 90, 90, 60, 30, 30, 60, i + j, i);
+            C(tri, o, P8(float, 90, 90, 60, 30, 30, 60, i + j, i);
               P(void *, renderer););
           }
         }
@@ -124,6 +98,7 @@ PS(g, mnar) {
   printf("2\n");
 }
 PE(g, mnar)
+void pith(int m, void *s, void *e, void *b) { *((int *)b) += 1; }
 int main(int argc, char *argv[]) {
   int err = 0;
   void *b = &err;
