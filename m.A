@@ -1,11 +1,16 @@
 bits 64
+%define a rax
+%define o rdi
+%define b rsi
+%define e rdx
+%define c rdx
 %macro function 1
   %defstr %%name %1
-  mov rax, rdi
-  mov rdi, %%name       ;name
-  lea rsi, [rel %1]     ;head
-  lea rdx, [rel %1.end] ;tail
-  jmp rax
+  mov a,  o
+  mov o,  %%name       ;name
+  lea b,  [rel %1]     ;head
+  lea e,  [rel %1.end] ;tail
+  jmp a
 %1:
 %endmacro
 

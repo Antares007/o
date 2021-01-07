@@ -1,14 +1,37 @@
 %include "m.A"
-push rdi
+push rdi ;push o
+
 lea rdx, [rel tail]
 import write_, 'write'
-pop rdi
+;%macro import 2
+;%%next:
+;  lea   rdi, [rel %%pith]
+;  jmp   rdx 
+;%1:
+;  dq 0
+;%%pith:
+;  mov   rax, %2
+;  cmp   rdi, rax
+;  jne    %%next
+;  mov  [rel %1], rsi
+;%endmacro
+
+pop rdi ;pop o
 
 function write
   call [rel write_]
   call [rel write_]
   ret
 write.end:
+;%macro nargo 1
+;  %defstr %%name %1
+;  mov rax, rdi          ;set o
+;  mov rdi, %%name       ;name
+;  lea rsi, [rel %1]     ;head
+;  lea rdx, [rel %1.end] ;tail
+;  jmp rax ; call o
+;%1:
+;%endmacro
 
 function ns
   function putchars

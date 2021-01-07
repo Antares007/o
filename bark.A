@@ -28,3 +28,7 @@ plus.end:
 
 tail:
 times 8 nop
+  ;mov a, 0
+  ;mov c, 1311693406324658740
+  ;mov qword [b + a], c
+  ;add a, 8
