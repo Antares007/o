@@ -92,6 +92,7 @@ tests:
   push   r14
   push   r12
   push   rbx
+  push   rcx
   push   rax
 
   mov    r14,                 rcx
@@ -103,17 +104,19 @@ tests:
   mov    rbx,                 rsi
   ;  abi(rsi == b);
   ;  a = b;
-  mov    word [rsi],          0x36
-  ;  P(short, 0x36);
-  mov    qword [rsi+0x2],     0x63
-  ;  P(long int, 0x63);
-  mov    dword [rsi+0xa],     0x99
-  ;  P(int, 0x99);
-  lea    r15,                 [rsi+0xe]
+  xor rcx, rcx
+  mov  word[rsi+rcx], 0x36
+  add rcx, 0x2
+  mov qword[rsi+rcx], 0x63
+  add rcx, 0x8
+  mov dword[rsi+rcx], 0x99
+  add rcx, 0x4
+  xor    rdi,                 rdi
+  lea    rdx,                 [rsi+0xe]
   ;  r15 = 
-  xor    edi,                 edi
   mov    rdx,                 r15
   call   r12
+
   ;  r12(0, a, b, r);
   mov    dword [rbx],         0x99
   mov    qword [rbx+0x4],     0x63
@@ -129,7 +132,9 @@ tests:
   xor    edx,                 edx
   mov    rcx,                 r14
   mov    rax,                 r12
+
   add    rsp,                 0x8
+  pop    rcx
   pop    rbx
   pop    r12
   pop    r14

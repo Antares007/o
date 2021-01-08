@@ -23,7 +23,7 @@ pop rdi
   mov   rdi, 0xa
   call  [rel putchars]
   call f
-  call c
+  call cc
   mov   rdi, 'hi'
   call  [rel putchars]
 exit:
@@ -33,7 +33,7 @@ buffer:
   times 1<<4 db '_'
   .size: equ $ - buffer
   align 1<<0
-c:
+cc:
 f:
   mov rdi, 'a'
   call [rel putchars]
