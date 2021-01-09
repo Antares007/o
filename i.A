@@ -1,0 +1,9 @@
+%include "m.A"
+
+import2 tail, write, read
+
+;        push    rdi
+;%%next: mov     rax, rdi
+;        lea     rdi, [rel %%pith]
+;        jmp     rax
+tail:
