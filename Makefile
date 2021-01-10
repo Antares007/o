@@ -43,5 +43,7 @@ clean:
 %.ndisasm: %.fbin
 	ndisasm -b64 $<
 
+%.run: %.out
+	./$<
 %.dump: %.o
 	objdump -d -Mintel $<
