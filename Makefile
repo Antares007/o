@@ -1,4 +1,4 @@
-CC=clang -O3 -g -std=gnu99 `sdl2-config --cflags` -Wno-multichar
+CC=clang -O3 -g -std=gnu99 `sdl2-config --cflags` -Wno-multichar $(UFLAGS)
 
 sE.out: sE.c
 	${CC} $^ -o $@ `sdl2-config --libs` -lm -lSDL2_ttf

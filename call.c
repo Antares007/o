@@ -5,6 +5,8 @@
 #define A(T, n)                                                                \
   T n = *(T *)b;                                                               \
   b += sizeof(T);
+#define N(n)                                                                   \
+  void n(void (*o)(int, void *, void *, void *), void *b, void *e, void *r)
 #define P2(t, a, b)                                                            \
   P(t, a)                                                                      \
   P(t, b)
@@ -17,6 +19,18 @@
 #define P16(t, a1, b1, c1, d1, e1, f1, g1, h1, a2, b2, c2, d2, e2, f2, g2, h2) \
   P8(t, a1, b1, c1, d1, e1, f1, g1, h1)                                        \
   P8(t, a2, b2, c2, d2, e2, f2, g2, h2)
+#define A2(t, a, b)                                                            \
+  A(t, a)                                                                      \
+  A(t, b)
+#define A4(t, a, b, c, d)                                                      \
+  A2(t, a, b)                                                                  \
+  A2(t, c, d)
+#define A8(t, a, b, c, d, e, f, g, h)                                          \
+  A4(t, a, b, c, d)                                                            \
+  A4(t, e, f, g, h)
+#define A16(t, a1, b1, c1, d1, e1, f1, g1, h1, a2, b2, c2, d2, e2, f2, g2, h2) \
+  A8(t, a1, b1, c1, d1, e1, f1, g1, h1)                                        \
+  P8(t, a2, b2, c2, d2, e2, f2, g2, h2)
 #define C(n, p, ...)                                                           \
   {                                                                            \
     void *start = s;                                                           \
@@ -24,30 +38,50 @@
     (n)((p), start, e, b);                                                     \
     s = start;                                                                 \
   }
-void *m();
 
-void test(void (*o)(int, void *, void *), void *b, void *e) {
-  P(long long, 11);
-  o(0, b, e);
-  P(int, 22);
-  o(0, b, e);
-  P(short, 33);
-  o(0, b, e);
+N(mul) {
+  // Mb
+  // Case(fx1, v1)
+  // Case(dx4, v1, v2, v3, v4)
+  // Defa()
+  // Me
 }
-void tests(void (*o)(int, void *, void *,void*), void *b, void *e, void*r) {
-  void *a;
-  a = b;
-  P(short, 0x36);
-  P(long int, 0x63);
-  P(int, 0x99);
-  o(0, a, b, r);
+N(callee) {
+  void *a = b;
+  {
+    b = a;
+    A(int, t);
+    A(int, s);
+    if (t == 'f' && s == 1) {
+      A(float, f);
+      //
+      return;
+    }
+  }
+  {
+    b = a;
+    A(int, t);
+    A(int, s);
+    if (t == 'd' && s == 4) {
+      A4(int, i1, i2, i3, i4);
+      //
+      return;
+    }
+  }
+}
+
+N(caller) {
+  void *a = b;
+
   b = a;
-  P(int, 0x99);
-  P(long int, 0x63);
-  P(short, 0x36);
-  o(0, a, b, r);
-  o(-1,0,0,r);
-}
-void run() {
-  test(0, 0, 0);
+  P(int, 'f');
+  P(int, 1);
+  P(float, 3.69);
+  callee(o, a, b, r);
+
+  b = a;
+  P(int, 'd');
+  P(int, 4);
+  P4(int, 1, 2, 3, 4);
+  callee(o, a, b, r);
 }
