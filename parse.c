@@ -30,14 +30,6 @@ void pith(void *m, void *h, void *t, void *v[2]) {
 }
 extern void E(void *, void *, void *, void *[2]);
 extern void S(void *, void *, void *, void *[2]);
-extern void expression(void *, void *, void *, void *[2]);
-extern void declaration(void *, void *, void *, void *[2]);
-extern void identifier(void *, void *, void *, void *[2]);
-extern void constant(void *, void *, void *, void *[2]);
-extern void decimal_constant(void *, void *, void *, void *[2]);
-extern void decimal_floating_constant(void *, void *, void *, void *[2]);
-extern void direct_declarator(void *, void *, void *, void *[2]);
-extern void additive_expression(void *, void *, void *, void *[2]);
 int main() {
   time_t seed = time(0);
   wyhash64_seed(seed);
@@ -45,8 +37,8 @@ int main() {
   for (int i = 0; i < 12; i++) {
     printf("%d ", i);
     E(pith, 0, 0, C(0, 99));
-    // printf("%d ", i);
-    // constant(pith, 0, 0, C(0, 999999));
+    printf("%d ", i);
+    S(pith, 0, 0, C(0, 99));
   }
   return 0;
 }
