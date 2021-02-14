@@ -1,0 +1,40 @@
+bits 64
+%define ptr
+%define a rax
+%define b rsi
+%define o rdi
+%define c rcx
+%define d rdx
+
+%macro N 2
+  %defstr %%name %1
+  mov a,  %%name       ;name
+  lea b,  [rel %1]     ;head
+  lea c,  [rel %1.end] ;tail
+  jmp o
+  db %2
+  db 0
+%1:
+%endmacro
+
+%macro A 3
+  %1.end:
+  N %2, %3
+%endmacro
+
+N nar1, "m[1]"
+nop
+nop
+nop
+nop
+A nar1, nar2, "m[2]"
+nop
+nop
+nop
+nop
+A nar2, nar3, "m[3]"
+nop
+nop
+nop
+nop
+nar3.end:
